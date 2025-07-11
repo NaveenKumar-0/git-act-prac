@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ulva - Fresh Non-Veg Delivers</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font for general application -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Marquee Animation for offers */
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            animation: marquee 15s linear infinite; /* Adjust speed as needed for smoothness */
+        }
+
+        /* General font application */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+
+        /* Basic styling for modals to ensure they are hidden by default */
+        .modal {
+            /* This class is primarily for positioning and overlay,
+               display is controlled by inline style or .modal.open */
+        }
+        .modal.open {
+            display: flex !important; /* Force display: flex when open */
+        }
+
+        /* Custom styles for an active navigation button state */
+        .nav-button.active {
+            background-color: rgba(255, 255, 255, 0.2); /* Slightly lighter blue or highlight */
+            border-bottom: 2px solid #fff; /* White underline */
+            color: #fff;
+        }
+
+        /* Smooth scroll for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* For a subtle gradient background on the body */
+        body {
+            background: linear-gradient(to bottom right, #f3f4f6, #e0e7f7); /* Light gray to light blue gradient */
+            min-height: 100vh; /* Ensure gradient covers full viewport height */
+        }
+
+        /* Enhanced button styling with better hover/active states */
+        button {
+            transition: all 0.2s ease-in-out;
+        }
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        /* Styles for the new contact section */
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem; /* Space between contact items */
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle shadow */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .contact-item img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 0.75rem;
+        }
+
+        .contact-item a {
+            color: #3b82f6; /* Tailwind blue-500 */
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .contact-item a:hover {
+            color: #2563eb; /* Tailwind blue-700 */
+            text-decoration: underline;
+        }
+
+        /* Style for privacy policy headings */
+        .privacy-policy h3 {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 600; /* font-semibold */
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #1f2937; /* gray-900 */
+        }
+        .privacy-policy p {
+            margin-bottom: 1rem;
+            color: #4b5563; /* gray-700 */
+            line-height: 1.6;
+        }
+        .privacy-policy ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: #4b5563; /* gray-700 */
+        }
+        .privacy-policy li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Styles for dropdown menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            right: 0; /* Align dropdown to the right */
+            top: 100%; /* Position below the button */
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transform-origin: top right;
+            animation: growIn 0.2s ease-out forwards;
+        }
+
+        .dropdown-content a, .dropdown-content button {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            width: 100%;
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-content a:hover, .dropdown-content button:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        @keyframes growIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Style for the "What's on your mind?" section */
+        .whats-on-your-mind-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+        }
+        .whats-on-your-mind-container::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome, Safari, Opera */
+        }
+
+        .category-card {
+            flex: 0 0 auto; /* Prevent stretching, allow shrinking, no growth */
+            width: 100px; /* Fixed width for each card */
+            height: 120px; /* Fixed height for each card */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-card img {
+            width: 60px; /* Image size */
+            height: 60px;
+            object-fit: cover;
+            border-radius: 50%; /* Circular images */
+            margin-bottom: 0.5rem;
+            border: 2px solid #cbd5e1; /* subtle border */
+        }
+
+        .category-card span {
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500; /* font-medium */
+            color: #374151; /* gray-700 */
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 flex flex-col">
+
+    <header class="bg-blue-800 shadow-lg font-sans text-white sticky top-0 z-40">
+        <!-- Top Offer Bar -->
+        <div id="offer-bar" class="bg-pink-200 text-gray-800 text-center py-2 text-sm font-medium overflow-hidden">
+            <div class="animate-marquee whitespace-nowrap">
+                <!-- Offers will be dynamically injected here -->
+            </div>
+        </div>
+
+        <!-- Main Header Row: Logo & User/Auth/Cart -->
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center p-4 pb-0 sm:pb-4">
+            <!-- Logo and App Name -->
+            <h1 class="text-3xl font-bold flex items-center mb-4 sm:mb-0">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-7 h-7 text-yellow-300"
+                    aria-label="Chicken Leg Piece Icon"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm0 18a8.25 8.25 0 100-16.5 8.25 8.25 0 000 16.5zm-2.25-1.5a.75.75 0 00.528 1.288h3.444a.75.75 0 00.528-1.288l-1.722-1.722a.75.75 0 00-1.06 0l-1.722 1.722zM9 13.5a.75.75 0 00.75.75h4.5a.75.75 0 00.75-.75V8.25a.75.75 0 00-.75-.75h-4.5a.75.75 0 00-.75.75v5.25z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+                <span class="ml-2">Ulva</span>
+            </h1>
+
+            <!-- Search Bar, User Info / Auth Buttons / Cart -->
+            <div class="flex items-center space-x-4 mb-4 sm:mb-0 w-full sm:w-auto justify-center sm:justify-end order-first sm:order-none">
+                <!-- Search Input -->
+                <div class="relative w-full sm:w-64">
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Search products..."
+                        class="w-full pl-10 pr-4 py-2 rounded-md bg-white bg-opacity-90 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                    <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+
+                <div id="auth-cart-section" class="flex items-center space-x-4">
+                    <!-- Content will be dynamically injected here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="bg-blue-800 border-t border-blue-700 py-2 sm:py-4">
+            <nav class="container mx-auto flex flex-wrap justify-center sm:justify-start space-x-2 sm:space-x-4 text-base font-semibold">
+                <button id="nav-home" class="nav-button text-white hover:text-blue-200 transition-colors duration-200 focus:outline-none py-1 px-2 rounded-md">
+                    Home
+                </button>
+                <button id="nav-chicken" class="nav-button text-white hover:text-blue-200 transition-colors duration-200 focus:outline-none py-1 px-2 rounded-md">
+                    Chicken
+                </button>
+                <button id="nav-mutton" class="nav-button text-white hover:text-blue-200 transition-colors duration-200 focus:outline-none py-1 px-2 rounded-md">
+                    Mutton
+                </button>
+                <button id="nav-eggs" class="nav-button text-white hover:text-blue-200 transition-colors duration-200 focus:outline-none py-1 px-2 rounded-md">
+                    Eggs
+                </button>
+                <button id="nav-fish" class="nav-button text-white hover:text-blue-200 transition-colors duration-200 focus:outline-none py-1 px-2 rounded-md">
+                    Fish
+                </button>
+                <button id="nav-offers" class="nav-button text-white hover:text-blue-200 transition-colors duration-200 focus:outline-none py-1 px-2 rounded-md">
+                    Offers
+                </button>
+                <button id="nav-orders" class="nav-button text-white hover:text-blue-200 transition-colors duration-200 focus:outline-none py-1 px-2 rounded-md">
+                    Orders
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main id="app-content" class="py-8 flex-grow">
+        <!-- Main content will be dynamically injected here -->
+    </main>
+
+    <footer class="bg-gray-800 text-white p-6 mt-8 font-sans">
+        <div class="container mx-auto text-center">
+            <div class="flex flex-wrap justify-center space-x-6 mb-4">
+                <button id="footer-contact-us" class="hover:text-blue-300 transition-colors duration-200">Contact Us</button>
+                <button id="footer-privacy-policy" class="hover:text-blue-300 transition-colors duration-200">Privacy Policy</button>
+            </div>
+            <p class="text-sm">&copy; <span id="current-year"></span> Ulva. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50 p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md font-sans">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login to Ulva</h2>
+            <form id="login-form">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="login-email">
+                        Email
+                    </label>
+                    <input
+                        type="email"
+                        id="login-email"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                        required
+                    />
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="login-password">
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        id="login-password"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                        required
+                    />
+                </div>
+                <p id="login-error" class="text-red-500 text-xs italic mb-4 text-center hidden"></p>
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <button
+                        type="submit"
+                        id="login-submit-btn"
+                        class="bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-blue-700 transition-colors duration-200"
+                    >
+                        Login
+                    </button>
+                    <button
+                        type="button"
+                        id="login-cancel-btn"
+                        class="bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-400 transition-colors duration-200"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </form>
+            <div class="mt-6 border-t border-gray-200 pt-6 text-center">
+                <button
+                    id="google-login-btn"
+                    class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded flex items-center justify-center space-x-2 hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:shadow-outline"
+                >
+                    <svg class="w-5 h-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" clipRule="evenodd" d="M48 24C48 22.115 47.832 20.252 47.5 18.423H24V29.577H37.037C36.425 32.553 34.747 35.158 32.327 36.877L32.229 37.5L40.231 43.5L40.941 43.123C45.249 39.117 48 33.914 48 28.167V24Z" fill="#4285F4"/>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M24 48C30.407 48 35.805 45.894 39.757 42.493L32.229 37.5C30.046 38.994 27.189 39.957 24 39.957C17.382 39.957 11.761 35.43 9.68 29.5H1.472L0.75 35.25L8.752 41.252L9.462 41.629C13.414 45.029 18.812 48 24 48Z" fill="#34A853"/>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M9.68 29.5C9.406 28.539 9.25 27.498 9.25 26.423C9.25 25.348 9.406 24.307 9.68 23.331V16.67H1.472L0.75 11.25L0.038 11.627C1.479 8.795 3.738 6.326 6.435 4.542L13.791 9.999L14.5 10.376C12.441 12.095 10.957 14.28 10.22 16.67H9.68Z" fill="#FBBC05"/>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M24 8.043C27.279 8.043 30.126 9.208 32.392 11.229L39.027 4.594C35.834 1.762 30.435 0 24 0C18.812 0 13.414 2.971 9.462 6.371L10.172 6.748L17.528 12.205L18.238 12.582C20.245 10.912 21.905 9.539 24 8.043Z" fill="#EA4335"/>
+                    </svg>
+                    <span>Continue with Google</span>
+                </button>
+            </div>
+            <p class="text-center text-gray-600 text-sm mt-4">
+                Don't have an account?
+                <button
+                    type="button"
+                    id="switch-to-signup-from-login"
+                    class="text-blue-600 hover:text-blue-800 font-semibold focus:outline-none"
+                >
+                    Sign Up
+                </button>
+            </p>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signup-modal" class="modal fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50 p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md font-sans">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Sign Up for Ulva</h2>
+            <form id="signup-form">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-name">
+                        Your Name
+                    </label>
+                    <input
+                        type="text"
+                        id="signup-name"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                        required
+                    />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-email">
+                        Email
+                    </label>
+                    <input
+                        type="email"
+                        id="signup-email"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                        required
+                    />
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="signup-password">
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        id="signup-password"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                        required
+                    />
+                </div>
+                <p id="signup-error" class="text-red-500 text-xs italic mb-4 text-center hidden"></p>
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <button
+                        type="submit"
+                        id="signup-submit-btn"
+                        class="bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-green-700 transition-colors duration-200"
+                    >
+                        Sign Up
+                    </button>
+                    <button
+                        type="button"
+                        id="signup-cancel-btn"
+                        class="bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-400 transition-colors duration-200"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </form>
+            <div class="mt-6 border-t border-gray-200 pt-6 text-center">
+                <button
+                    id="google-signup-btn"
+                    class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded flex items-center justify-center space-x-2 hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:shadow-outline"
+                >
+                    <svg class="w-5 h-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" clipRule="evenodd" d="M48 24C48 22.115 47.832 20.252 47.5 18.423H24V29.577H37.037C36.425 32.553 34.747 35.158 32.327 36.877L32.229 37.5L40.231 43.5L40.941 43.123C45.249 39.117 48 33.914 48 28.167V24Z" fill="#4285F4"/>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M24 48C30.407 48 35.805 45.894 39.757 42.493L32.229 37.5C30.046 38.994 27.189 39.957 24 39.957C17.382 39.957 11.761 35.43 9.68 29.5H1.472L0.75 35.25L8.752 41.252L9.462 41.629C13.414 45.029 18.812 48 24 48Z" fill="#34A853"/>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M9.68 29.5C9.406 28.539 9.25 27.498 9.25 26.423C9.25 25.348 9.406 24.307 9.68 23.331V16.67H1.472L0.75 11.25L0.038 11.627C1.479 8.795 3.738 6.326 6.435 4.542L13.791 9.999L14.5 10.376C12.441 12.095 10.957 14.28 10.22 16.67H9.68Z" fill="#FBBC05"/>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M24 8.043C27.279 8.043 30.126 9.208 32.392 11.229L39.027 4.594C35.834 1.762 30.435 0 24 0C18.812 0 13.414 2.971 9.462 6.371L10.172 6.748L17.528 12.205L18.238 12.582C20.245 10.912 21.905 9.539 24 8.043Z" fill="#EA4335"/>
+                    </svg>
+                    <span>Continue with Google</span>
+                </button>
+            </div>
+            <p class="text-center text-gray-600 text-sm mt-4">
+                Already have an account?
+                <button
+                    type="button"
+                    id="switch-to-login-from-signup"
+                    class="text-blue-600 hover:text-blue-800 font-semibold focus:outline-none"
+                >
+                    Login
+                </button>
+            </p>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-xl text-lg font-medium transition-opacity duration-300 ease-in-out opacity-0 hidden z-50">
+        <!-- Message will be dynamically injected here -->
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import {
+            getAuth,
+            signInAnonymously,
+            signInWithCustomToken,
+            onAuthStateChanged,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            signOut,
+            updateProfile,
+            GoogleAuthProvider,
+            signInWithPopup
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            onSnapshot,
+            query,
+            where,
+            serverTimestamp,
+            Timestamp
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // IMPORTANT: Firebase config and app ID are provided by the Canvas environment.
+        // These global variables are expected to be available at runtime.
+        // Handle them gracefully if running outside the Canvas environment.
+        const firebaseConfig = typeof __firebase_config !== 'undefined' && Object.keys(__firebase_config).length > 0
+            ? JSON.parse(__firebase_config)
+            : {
+                // Using the user-provided Firebase config directly here for local execution
+                apiKey: "AIzaSyCmCMRN2bBgCViWINOOeYmdmIt_UF2PVFo",
+                authDomain: "ulva-nvs.firebaseapp.com",
+                projectId: "ulva-nvs",
+                storageBucket: "ulva-nvs.firebasestorage.app",
+                messagingSenderId: "898248650441",
+                appId: "1:898248650441:web:123f06f4afcbeda0c4e718",
+                measurementId: "G-3TWT1EQHWB"
+            };
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-ulva-app-id';
+
+        // Initialize Firebase App
+        let app;
+        let db;
+        let auth;
+
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            console.log("Firebase initialized successfully.", { firebaseConfig, appId });
+        } catch (error) {
+            console.error("Failed to initialize Firebase. Please check your firebaseConfig:", error);
+            document.getElementById('app-content').innerHTML = `
+                <div class="container mx-auto p-8 text-center text-red-700">
+                    <h2 class="text-3xl font-bold mb-4">Application Error</h2>
+                    <p class="text-xl">Could not initialize Firebase. This might happen if you are running the file directly from your browser and Firebase configuration is missing.</p>
+                    <p class="text-lg mt-2">Please ensure the Firebase configuration in your HTML file is correct and Firebase is properly set up for your project.</p>
+                    <p class="text-sm mt-4">Error details: ${error.message}</p>
+                </div>
+            `;
+            // Prevent further execution if Firebase initialization fails critically
+            throw new Error("Firebase initialization failed.");
+        }
+
+
+        let currentUser = null; // To store the current authenticated user object
+        let isAuthReady = false; // Flag to indicate if initial auth state is checked
+        let isLoadingOrders = false; // Flag for order loading state
+
+        // Product Data - Using distinct category-specific placeholder images for better clarity
+        // For actual product images, you would replace these with real image URLs (e.g., from Firebase Storage or CDN)
+        const products = [
+            // Chicken (warm, inviting colors)
+            { id: 'c1', name: 'Country Chicken - Curry Cut (500g)', category: 'chicken', type: 'Country Chicken', description: 'Freshly cut, lean country chicken perfect for curries. Authentic taste.', price: 280, imageUrl: 'https://placehold.co/400x300/F05252/FFFFFF?text=Chicken+Curry' },
+            { id: 'c2', name: 'Country Chicken - Boneless (500g)', category: 'chicken', type: 'Country Chicken', description: 'Tender boneless country chicken, great for stir-fries and kebabs. Ready to cook.', price: 350, imageUrl: 'https://placehold.co/400x300/F05252/FFFFFF?text=Chicken+Boneless' },
+            { id: 'c3', name: 'Broiler Chicken - Curry Cut (500g)', category: 'chicken', type: 'Broiler Chicken', description: 'Classic broiler chicken, cut into pieces for a hearty curry. Farm-fresh.', price: 180, imageUrl: 'https://placehold.co/400x300/FF7F50/FFFFFF?text=Broiler+Curry' },
+            { id: 'c4', name: 'Broiler Chicken - Breast Fillet (250g)', category: 'chicken', type: 'Broiler Chicken', description: 'Skinless, boneless breast fillets, ideal for grilling and healthy meals. High protein.', price: 220, imageUrl: 'https://placehold.co/400x300/FF7F50/FFFFFF?text=Broiler+Fillet' },
+            { id: 'c5', name: 'Chicken Drumsticks (500g)', category: 'chicken', type: 'Broiler Chicken', description: 'Juicy chicken drumsticks, perfect for frying or baking. Kids favorite.', price: 200, imageUrl: 'https://placehold.co/400x300/FFA07A/FFFFFF?text=Drumsticks' },
+            // Mutton (deep, rich colors)
+            { id: 'm1', name: 'Goat Mutton - Curry Cut (500g)', category: 'mutton', type: 'Goat Mutton', description: 'Tender goat mutton, cut for traditional curries. Rich flavor.', price: 700, imageUrl: 'https://placehold.co/400x300/8B0000/FFFFFF?text=Goat+Mutton+Curry' },
+            { id: 'm2', name: 'Goat Mutton - Boneless (500g)', category: 'mutton', type: 'Goat Mutton', description: 'Lean boneless goat mutton, versatile for various dishes. Easy to cook.', price: 850, imageUrl: 'https://placehold.co/400x300/A52A2A/FFFFFF?text=Goat+Mutton+Boneless' },
+            { id: 'm3', name: 'Lamb Mutton - Chops (250g)', category: 'mutton', type: 'Lamb Mutton', description: 'Premium lamb chops, succulent and flavorful. Perfect for grilling.', price: 900, imageUrl: 'https://placehold.co/400x300/CD5C5C/FFFFFF?text=Lamb+Chops' },
+            { id: 'm4', name: 'Lamb Mutton - Keema (500g)', category: 'mutton', type: 'Lamb Mutton', description: 'Finely minced lamb mutton, great for kebabs or patties. Quick preparation.', price: 750, imageUrl: 'https://placehold.co/400x300/DC143C/FFFFFF?text=Lamb+Keema' },
+            // Eggs (bright, light colors)
+            { id: 'e1', name: 'Farm Fresh Eggs (6 Pcs)', category: 'eggs', type: 'Farm Eggs', description: 'Naturally fresh and protein-rich farm eggs. Daily essential.', price: 60, imageUrl: 'https://placehold.co/400x300/FFD700/333333?text=Farm+Eggs' },
+            { id: 'e2', name: 'Country Eggs (6 Pcs)', category: 'eggs', type: 'Country Eggs', description: 'Nutrient-dense country eggs from free-range hens. Healthier choice.', price: 90, imageUrl: 'https://placehold.co/400x300/FFDB58/333333?text=Country+Eggs' },
+            { id: 'e3', name: 'Quail Eggs (12 Pcs)', category: 'eggs', type: 'Quail Eggs', description: 'Small, speckled, and delicious quail eggs. Gourmet delicacy.', price: 120, imageUrl: 'https://placehold.co/400x300/F0E68C/333333?text=Quail+Eggs' },
+            // Fish (cool, fresh colors)
+            { id: 'f1', name: 'Rohu Fish - Curry Cut (500g)', category: 'fish', type: 'Rohu', description: 'Popular freshwater fish, great for curries. Freshly sourced.', price: 300, imageUrl: 'https://placehold.co/400x300/4682B4/FFFFFF?text=Rohu+Fish' },
+            { id: 'f2', name: 'Katla Fish - Slices (500g)', category: 'fish', type: 'Katla', description: 'Large freshwater fish, perfect for frying or grilling. Juicy slices.', price: 320, imageUrl: 'https://placehold.co/400x300/6A5ACD/FFFFFF?text=Katla+Fish' },
+            { id: 'f3', name: 'Salmon Fillet (250g)', category: 'fish', type: 'Salmon', description: 'Rich in Omega-3, boneless salmon fillet. Premium quality.', price: 950, imageUrl: 'https://placehold.co/400x300/5F9EA0/FFFFFF?text=Salmon+Fillet' },
+            { id: 'f4', name: 'Pomfret Fish - Whole (500g)', category: 'fish', type: 'Pomfret', description: 'Whole silver pomfret, excellent for baking or deep-frying. Seafood delight.', price: 600, imageUrl: 'https://placehold.co/400x300/7FFFD4/333333?text=Pomfret+Fish' },
+            { id: 'f5', name: 'Prawns - Medium (Cleaned, 250g)', category: 'fish', type: 'Prawns', description: 'Fresh, cleaned prawns, ready for your favorite seafood dish. Convenient pack.', price: 450, imageUrl: 'https://placehold.co/400x300/ADD8E6/333333?text=Prawns' },
+            { id: 'f6', name: 'Kingfish - Steaks (500g)', category: 'fish', type: 'Kingfish', description: 'Thick, meaty steaks of Kingfish, ideal for grilling. Delicious and healthy.', price: 750, imageUrl: 'https://placehold.co/400x300/B0E0E6/333333?text=Kingfish+Steaks' },
+        ];
+
+
+        // Offer messages for the header carousel
+        const headerOffers = [
+            "Flat 15% OFF on your first order! Use code: ULVAWELCOME",
+            "Free Delivery on all orders above ₹499! Shop More, Save More!",
+            "Weekend Special: Buy 1 Get 1 on selected Chicken cuts!",
+            "Fresh Catch Alert: Get 10% off Salmon Fillet this week!",
+        ];
+
+        // Categories for "What's on your mind?" section
+        const whatsOnYourMindCategories = [
+            { name: 'Best Sellers', category: 'best-sellers', imageUrl: 'https://placehold.co/100x100/FFD700/333333?text=Best+Sellers' },
+            { name: 'Boneless', category: 'boneless', imageUrl: 'https://placehold.co/100x100/A52A2A/FFFFFF?text=Boneless' },
+            { name: 'Seafood', category: 'seafood', imageUrl: 'https://placehold.co/100x100/4682B4/FFFFFF?text=Seafood' },
+            { name: 'Offers', category: 'offers', imageUrl: 'https://placehold.co/100x100/FF6347/FFFFFF?text=Offers' },
+            // Removed other categories as per user request
+        ];
+
+        let cartItems = [];
+        let pastOrders = [];
+        let notificationTimer = null;
+
+        // Utility Functions
+        function getProductPlaceholderImageUrl(category) {
+            let bgColor, textColor, text;
+            switch (category) {
+                case 'chicken': bgColor = 'F05252'; textColor = 'FFFFFF'; text = 'Chicken'; break;
+                case 'mutton': bgColor = '8B0000'; textColor = 'FFFFFF'; text = 'Mutton'; break;
+                case 'eggs': bgColor = 'FFD700'; textColor = '333333'; text = 'Eggs'; break;
+                case 'fish': bgColor = '4682B4'; textColor = 'FFFFFF'; text = 'Fish'; break;
+                default: bgColor = 'E0E0E0'; textColor = '333333'; text = 'Product'; break;
+            }
+            return `https://placehold.co/400x300/${bgColor}/${textColor}?text=${text}+Product`;
+        }
+
+        // Utility function to get random items from an array
+        function getRandomItems(arr, num) {
+            const shuffled = [...arr].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, num);
+        }
+
+        function showNotification(message) {
+            const toast = document.getElementById('notification-toast');
+            toast.textContent = message;
+            toast.classList.remove('hidden', 'opacity-0');
+            toast.classList.add('opacity-90');
+
+            if (notificationTimer) {
+                clearTimeout(notificationTimer);
+            }
+            notificationTimer = setTimeout(() => {
+                toast.classList.remove('opacity-90');
+                toast.classList.add('opacity-0');
+                // Hide after transition
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 300);
+            }, 3000);
+        }
+
+        function setAuthLoading(isLoading) {
+            const loginSubmitBtn = document.getElementById('login-submit-btn');
+            const googleLoginBtn = document.getElementById('google-login-btn');
+            const signupSubmitBtn = document.getElementById('signup-submit-btn');
+            const googleSignupBtn = document.getElementById('google-signup-btn');
+
+            if (loginSubmitBtn) {
+                loginSubmitBtn.disabled = isLoading;
+                loginSubmitBtn.textContent = isLoading ? 'Logging In...' : 'Login';
+                if (isLoading) loginSubmitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                else loginSubmitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            if (googleLoginBtn) {
+                googleLoginBtn.disabled = isLoading;
+                if (isLoading) googleLoginBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                else googleLoginBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+
+            if (signupSubmitBtn) {
+                signupSubmitBtn.disabled = isLoading;
+                signupSubmitBtn.textContent = isLoading ? 'Signing Up...' : 'Sign Up';
+                if (isLoading) signupSubmitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                else signupSubmitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            if (googleSignupBtn) {
+                googleSignupBtn.disabled = isLoading;
+                if (isLoading) googleSignupBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                else googleSignupBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function setCheckoutLoading(isLoading) {
+            const checkoutButton = document.querySelector('#app-content #checkout-btn'); // Use the ID for more specific targeting
+            if (checkoutButton) {
+                checkoutButton.disabled = isLoading;
+                checkoutButton.textContent = isLoading ? 'Processing...' : 'Proceed to Checkout';
+                if (isLoading) {
+                    checkoutButton.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    checkoutButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
+            isLoadingOrders = isLoading;
+            if (currentPage === 'orders') { // Only re-render if we are on the orders page
+                 renderOrderHistory(); // Re-render to show loading state if on orders page
+            }
+        }
+
+        // --- Header Rendering ---
+        function updateHeader(cartCount, user) {
+            const authCartSection = document.getElementById('auth-cart-section');
+            authCartSection.innerHTML = ''; // Clear existing content
+
+            if (user) {
+                const displayName = user.displayName || 'Guest';
+
+                // User Profile Dropdown
+                const userDropdown = document.createElement('div');
+                userDropdown.className = 'dropdown flex items-center space-x-2 cursor-pointer relative';
+                userDropdown.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.046 0 0112 21a8.966 8.046 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span class="text-lg font-semibold whitespace-nowrap hidden sm:inline">${displayName}</span>
+                    <div class="dropdown-content">
+                        <button id="profile-option">My Profile</button>
+                        <button id="settings-option">Settings</button>
+                        <button id="help-option">Help</button>
+                        <button id="logout-btn-dropdown">Logout</button>
+                    </div>
+                `;
+                authCartSection.appendChild(userDropdown);
+
+                document.getElementById('profile-option').addEventListener('click', () => navigate('my-profile'));
+                document.getElementById('settings-option').addEventListener('click', () => showNotification('Settings are under development.'));
+                document.getElementById('help-option').addEventListener('click', () => showNotification('Help section is under development.'));
+                document.getElementById('logout-btn-dropdown').addEventListener('click', handleLogout);
+
+            } else {
+                authCartSection.innerHTML = `
+                    <button
+                        id="login-auth-btn"
+                        class="bg-white text-blue-700 px-3 py-1 rounded-md hover:bg-gray-200 transition-colors duration-200"
+                    >
+                        Login
+                    </button>
+                    <button
+                        id="signup-auth-btn"
+                        class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 transition-colors duration-200"
+                    >
+                        Sign Up
+                    </button>
+                `;
+                document.getElementById('login-auth-btn').addEventListener('click', () => openLoginModal());
+                document.getElementById('signup-auth-btn').addEventListener('click', () => openSignupModal());
+            }
+
+            // Always add cart button with icon and count badge
+            const cartButton = document.createElement('button');
+            cartButton.id = 'cart-button';
+            cartButton.className = 'bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md transition-colors duration-200 relative ml-4 flex items-center justify-center';
+            cartButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.023.834L7.5 14.25m0 0l-.5 4.5m0 0h8.25m-8.25 0c-.354 0-.694.067-1.023.193L5.25 18.043M13.5 10.5h.008v.008h-.008V10.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM17.5 10.5h.008v.008h-.008V10.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM19.5 18H10a2 2 0 00-2 2v1.25A2.75 2.75 0 0010.75 24h6.5A2.75 2.75 0 0020 21.25V20a2 2 0 00-2-2h-2.5zM12.75 20.25a.75.75 0 100 1.5.75.75 0 000-1.5zM16.25 20.25a.75.75 0 100 1.5.75.75 0 000-1.5z" />
+                </svg>
+                <span class="ml-1">${cartCount}</span>
+            `;
+            cartButton.addEventListener('click', () => navigate('cart'));
+            authCartSection.appendChild(cartButton);
+        }
+
+        let currentOfferIndex = 0;
+        function startOfferCarousel() {
+            const offerBarContent = document.querySelector('#offer-bar .animate-marquee');
+            setInterval(() => {
+                currentOfferIndex = (currentOfferIndex + 1) % headerOffers.length;
+                offerBarContent.textContent = headerOffers[currentOfferIndex];
+            }, 5000); // Change offer every 5 seconds
+            offerBarContent.textContent = headerOffers[currentOfferIndex]; // Set initial offer
+        }
+
+        // --- "What's on your mind?" Section Rendering ---
+        function renderWhatsOnYourMind() {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'container mx-auto p-4 font-sans mb-8';
+            sectionDiv.innerHTML = `
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">What's on your mind?</h2>
+                <div class="whats-on-your-mind-container flex space-x-4 pb-2">
+                    <!-- Category cards will be injected here -->
+                </div>
+            `;
+            const categoriesContainer = sectionDiv.querySelector('.whats-on-your-mind-container');
+
+            whatsOnYourMindCategories.forEach(cat => {
+                const card = document.createElement('div');
+                card.className = 'category-card';
+                card.innerHTML = `
+                    <img src="${cat.imageUrl}" alt="${cat.name}" />
+                    <span>${cat.name}</span>
+                `;
+                card.addEventListener('click', () => {
+                    navigate(cat.category);
+                });
+                categoriesContainer.appendChild(card);
+            });
+            return sectionDiv;
+        }
+
+        // --- Product Card Rendering ---
+        function createProductCard(product, onAddToCartCallback) {
+            console.log("createProductCard called for:", product.name); // Log when a product card is created
+            const card = document.createElement('div');
+            // Enhanced product card styling
+            card.className = 'bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col font-sans';
+            card.innerHTML = `
+                <img
+                    src="${product.imageUrl}"
+                    alt="${product.name}"
+                    class="w-full h-48 object-cover rounded-t-xl transition-transform duration-300 hover:scale-105"
+                />
+                <div class="p-5 flex flex-col justify-between flex-grow">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-1">${product.name}</h3>
+                        <p class="text-sm text-gray-600 mb-2 truncate">${product.description}</p>
+                        <p class="text-2xl font-bold text-blue-600 mb-3">₹${product.price}</p>
+                    </div>
+                    <div class="flex items-center space-x-2 mt-auto">
+                        <button class="quantity-decrement bg-gray-200 text-gray-700 px-3 py-1 rounded-full hover:bg-gray-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                            -
+                        </button>
+                        <input
+                            type="number"
+                            min="1"
+                            value="1"
+                            class="quantity-input w-16 p-2 border border-gray-300 rounded-md text-center focus:border-blue-500 focus:ring-blue-500"
+                        />
+                        <button class="quantity-increment bg-gray-200 text-gray-700 px-3 py-1 rounded-full hover:bg-gray-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                            +
+                        </button>
+                        <button
+                            class="add-to-cart-btn flex-1 bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700 transition-colors duration-200 font-semibold shadow-md active:shadow-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Image error handling
+            const img = card.querySelector('img');
+            img.onerror = function() {
+                this.onerror = null; // Prevent infinite loop
+                this.src = getProductPlaceholderImageUrl(product.category);
+            };
+
+            const quantityInput = card.querySelector('.quantity-input');
+            const decrementBtn = card.querySelector('.quantity-decrement');
+            const incrementBtn = card.querySelector('.quantity-increment');
+            const addToCartBtn = card.querySelector('.add-to-cart-btn');
+
+            decrementBtn.addEventListener('click', () => {
+                let currentQuantity = parseInt(quantityInput.value);
+                quantityInput.value = Math.max(1, currentQuantity - 1);
+            });
+            incrementBtn.addEventListener('click', () => {
+                let currentQuantity = parseInt(quantityInput.value);
+                quantityInput.value = currentQuantity + 1;
+            });
+            quantityInput.addEventListener('change', (e) => {
+                quantityInput.value = Math.max(1, parseInt(e.target.value) || 1);
+            });
+            addToCartBtn.addEventListener('click', () => {
+                onAddToCartCallback(product, parseInt(quantityInput.value));
+                quantityInput.value = 1; // Reset quantity after adding to cart
+            });
+
+            return card;
+        }
+
+        // --- Product List Page ---
+        function renderProductList(category, productsToDisplay = null) {
+            console.log(`renderProductList called for category: ${category}`); // Log when this function is called
+            const appContent = document.getElementById('app-content');
+            appContent.innerHTML = ''; // Clear previous content
+
+            const pageContainer = document.createElement('div');
+            pageContainer.className = 'container mx-auto p-4 font-sans';
+
+            // Add "What's on your mind?" section only for the 'home' category (all products)
+            if (category === 'all') {
+                pageContainer.appendChild(renderWhatsOnYourMind());
+            }
+
+            const title = document.createElement('h2');
+            title.className = 'text-3xl font-bold text-gray-800 mb-6 text-center capitalize';
+            title.textContent = category === 'all' ? 'All Products' :
+                                category === 'best-sellers' ? 'Our Best Sellers' :
+                                category === 'boneless' ? 'Boneless Products' :
+                                category === 'seafood' ? 'Fresh Seafood' :
+                                `Search Results for "${category}"` ; // Default for chicken, mutton, eggs, fish, offers, orders, and search
+            pageContainer.appendChild(title);
+
+
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'; /* Added xl:grid-cols-4 */
+
+            let finalProducts = [];
+            if (productsToDisplay) {
+                finalProducts = productsToDisplay;
+            } else if (category === 'all') {
+                finalProducts = products;
+            } else {
+                // This covers chicken, mutton, eggs, fish (from nav bar)
+                finalProducts = products.filter(p => p.category === category);
+            }
+
+            console.log(`Found ${finalProducts.length} products for category ${category}`); // Log how many products are found
+
+            if (finalProducts.length === 0) {
+                 grid.innerHTML = `<p class="text-center text-gray-600 text-xl py-8 col-span-full">No products found for "${category}" at the moment.</p>`;
+            } else {
+                finalProducts.forEach(product => {
+                    grid.appendChild(createProductCard(product, handleAddToCart));
+                });
+            }
+
+
+            pageContainer.appendChild(grid);
+            appContent.appendChild(pageContainer);
+            console.log("Product list rendered to DOM."); // Confirm elements are appended
+        }
+
+        // --- Specific Category Pages for "What's on your mind?"
+        function renderBestSellersPage() {
+            const allProducts = products; // Get all products
+            const randomProducts = getRandomItems(allProducts, 3); // Get 3 random products
+            renderProductList('best-sellers', randomProducts);
+        }
+
+        function renderBonelessPage() {
+            // Filter products that are explicitly 'Boneless' or contain 'Keema' (which is typically boneless)
+            const bonelessProducts = products.filter(p =>
+                p.type.toLowerCase().includes('boneless') || p.name.toLowerCase().includes('keema')
+            );
+            renderProductList('boneless', bonelessProducts);
+        }
+
+        function renderSeafoodPage() {
+            const fishProducts = products.filter(p => p.category === 'fish');
+            const randomFish = getRandomItems(fishProducts, 2); // Get 2 random fish products
+            renderProductList('seafood', randomFish);
+        }
+
+        // --- Search Functionality ---
+        function renderSearchResults(searchTerm) {
+            const lowerCaseSearchTerm = searchTerm.toLowerCase();
+            const filteredProducts = products.filter(p =>
+                p.name.toLowerCase().includes(lowerCaseSearchTerm) ||
+                p.description.toLowerCase().includes(lowerCaseSearchTerm) ||
+                p.category.toLowerCase().includes(lowerCaseSearchTerm) ||
+                p.type.toLowerCase().includes(lowerCaseSearchTerm)
+            );
+            renderProductList(searchTerm, filteredProducts); // Use searchTerm as category for title
+        }
+
+        // --- Cart Page ---
+        function renderCart() {
+            console.log("renderCart called."); // Log when cart page is rendered
+            const appContent = document.getElementById('app-content');
+            appContent.innerHTML = ''; // Clear previous content
+
+            const cartContainer = document.createElement('div');
+            cartContainer.className = 'container mx-auto p-4 font-sans cart-container'; // Added cart-container class
+            cartContainer.innerHTML = `
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Your Cart</h2>
+                <div id="cart-items-list" class="bg-white rounded-lg shadow-md p-6">
+                    <!-- Cart items will be rendered here -->
+                </div>
+                <div id="cart-summary" class="mt-6 flex justify-between items-center py-4 border-t border-gray-300">
+                    <h3 class="text-2xl font-bold text-gray-800">Total:</h3>
+                    <p id="cart-total" class="text-3xl font-bold text-blue-600">₹0.00</p>
+                </div>
+                <button
+                    id="checkout-btn"
+                    class="mt-6 w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition-colors duration-200 font-semibold text-xl shadow-lg active:shadow-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+                >
+                    Proceed to Checkout
+                </button>
+            `;
+            appContent.appendChild(cartContainer);
+
+            const cartItemsList = document.getElementById('cart-items-list');
+            const cartTotalElement = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            if (cartItems.length === 0) {
+                cartItemsList.innerHTML = '<p class="text-center text-gray-600 text-xl py-8">Your cart is empty. Start adding some fresh non-veg!</p>';
+                document.getElementById('cart-summary').style.display = 'none';
+                checkoutBtn.style.display = 'none';
+            } else {
+                document.getElementById('cart-summary').style.display = 'flex';
+                checkoutBtn.style.display = 'block';
+                cartItemsList.innerHTML = ''; // Clear it before re-rendering items
+
+                cartItems.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'flex items-center justify-between border-b border-gray-200 py-4 last:border-b-0';
+
+                    // Display quantity for BOGO items as 1 + 1 Free
+                    const quantityDisplay = item.isFreebie ? `(Free)` : `x ${item.quantity}`;
+                    const itemPriceDisplay = item.isFreebie ? 'FREE' : `₹${(item.price * item.quantity).toFixed(2)}`;
+
+                    itemDiv.innerHTML = `
+                        <div class="flex items-center space-x-4">
+                            <img
+                                src="${item.imageUrl}"
+                                alt="${item.name}"
+                                class="w-20 h-20 object-cover rounded-lg shadow-sm"
+                            />
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800">${item.name}</h3>
+                                <p class="text-md text-gray-600">₹${item.price.toFixed(2)} / unit ${quantityDisplay}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <!-- Only show quantity input if not a freebie -->
+                            ${!item.isFreebie ? `<input type="number" min="1" value="${item.quantity}" class="cart-quantity-input w-20 p-2 border border-gray-300 rounded-md text-center focus:border-blue-500 focus:ring-blue-500"/>` : ''}
+                            <p class="text-lg font-semibold text-gray-800">${itemPriceDisplay}</p>
+                            <button class="remove-cart-item-btn text-red-500 hover:text-red-700 transition-colors duration-200 focus:outline-none p-2 rounded-full hover:bg-red-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                    cartItemsList.appendChild(itemDiv);
+
+                    // Image error handling for cart items
+                    const img = itemDiv.querySelector('img');
+                    img.onerror = function() {
+                        this.onerror = null;
+                        this.src = getProductPlaceholderImageUrl(item.category);
+                    };
+
+                    // Add event listener only if it's not a freebie item
+                    if (!item.isFreebie) {
+                        itemDiv.querySelector('.cart-quantity-input').addEventListener('change', (e) => {
+                            handleUpdateQuantity(item.id, parseInt(e.target.value) || 1);
+                        });
+                    }
+                    itemDiv.querySelector('.remove-cart-item-btn').addEventListener('click', () => {
+                        handleRemoveItem(item.id);
+                    });
+                });
+            }
+
+            // Calculate total excluding freebie items
+            const total = cartItems.reduce((sum, item) => sum + (item.isFreebie ? 0 : item.price * item.quantity), 0);
+            cartTotalElement.textContent = `₹${total.toFixed(2)}`;
+
+            checkoutBtn.addEventListener('click', handleCheckout);
+            setCheckoutLoading(isLoadingOrders); // Apply loading state to checkout button
+        }
+
+        // --- Offers Page ---
+        // Enhanced sampleOffers data with offer types and target products
+        const sampleOffers = [
+            {
+                id: 'offer1',
+                title: 'Weekend Chicken Feast! (Buy 1 Get 1 FREE!)',
+                description: 'Buy one Broiler Chicken - Curry Cut, get one FREE! Limited time offer!',
+                imageUrl: 'https://placehold.co/600x200/FFCDD2/D50000?text=BOGO+Chicken',
+                validity: 'Valid till Sunday, 11:59 PM',
+                type: 'BOGO',
+                appliesToProductId: 'c3' // ID of "Broiler Chicken - Curry Cut"
+            },
+            {
+                id: 'offer2',
+                title: 'Mutton Monday Madness',
+                description: 'Flat ₹50 off on Goat Mutton Curry Cut. Enjoy your week!',
+                imageUrl: 'https://placehold.co/600x200/D1C4E9/673AB7?text=Mutton+Discount',
+                validity: 'Valid only on Mondays.',
+                type: 'DISCOUNT',
+                appliesToProductId: 'm1', // ID of "Goat Mutton - Curry Cut"
+                discountAmount: 50
+            },
+            {
+                id: 'offer3',
+                title: 'Fish Friday Frenzy',
+                description: 'Buy any Salmon or Kingfish product and get 5% off your next fish order.',
+                imageUrl: 'https://placehold.co/600x200/C8E6C9/2E7D32?text=Fish+Promo',
+                validity: 'Applicable on next purchase after Friday.',
+                type: 'FUTURE_DISCOUNT'
+            },
+        ];
+
+        function renderOffers() {
+            console.log("renderOffers called."); // Log when offers page is rendered
+            const appContent = document.getElementById('app-content');
+            appContent.innerHTML = '';
+
+            const offersContainer = document.createElement('div');
+            offersContainer.className = 'container mx-auto p-4 font-sans';
+            offersContainer.innerHTML = `
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Exclusive Ulva Offers!</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="offers-grid">
+                    <!-- Offers will be rendered here -->
+                </div>
+                <p class="text-center text-gray-600 mt-10">Stay tuned for more exciting offers!</p>
+            `;
+            appContent.appendChild(offersContainer);
+
+            const offersGrid = document.getElementById('offers-grid');
+
+            sampleOffers.forEach(offer => {
+                const offerCard = document.createElement('div');
+                offerCard.className = 'bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105';
+
+                let buttonText = "View Offer";
+                let buttonClass = "bg-blue-600 hover:bg-blue-700";
+
+                if (offer.type === 'BOGO') {
+                    buttonText = "Buy 1 Get 1!";
+                    buttonClass = "bg-green-600 hover:bg-green-700";
+                } else if (offer.type === 'DISCOUNT') {
+                    buttonText = `Get ₹${offer.discountAmount} OFF!`;
+                    buttonClass = "bg-purple-600 hover:bg-purple-700";
+                }
+
+                offerCard.innerHTML = `
+                    <img src="${offer.imageUrl}" alt="${offer.title}" class="w-full h-48 object-cover" />
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-2">${offer.title}</h3>
+                        <p class="text-gray-700 mb-4">${offer.description}</p>
+                        <p class="text-sm text-gray-500 italic">${offer.validity}</p>
+                        <button class="offer-buy-btn mt-4 text-white py-2 px-4 rounded-md transition-colors duration-200 font-semibold focus:outline-none focus:ring-2 focus:ring-opacity-75 ${buttonClass}" data-offer-id="${offer.id}">
+                            ${buttonText}
+                        </button>
+                    </div>
+                `;
+                offersGrid.appendChild(offerCard);
+
+                // Add event listener to the "Buy Now" button for each offer
+                offerCard.querySelector('.offer-buy-btn').addEventListener('click', () => handleOfferAction(offer.id));
+            });
+        }
+
+        function handleOfferAction(offerId) {
+            const offer = sampleOffers.find(o => o.id === offerId);
+            if (!offer) {
+                showNotification('Offer not found.');
+                return;
+            }
+
+            const targetProduct = products.find(p => p.id === offer.appliesToProductId);
+
+            if (!targetProduct && (offer.type === 'BOGO' || offer.type === 'DISCOUNT')) {
+                showNotification('Target product for this offer not found.');
+                return;
+            }
+
+            switch (offer.type) {
+                case 'BOGO':
+                    // Add one regular item and one freebie item to cart
+                    addItemsToCart([
+                        { ...targetProduct, quantity: 1, isFreebie: false },
+                        { ...targetProduct, quantity: 1, price: 0, isFreebie: true } // Mark as free and set price to 0
+                    ]);
+                    showNotification(`${targetProduct.name} (Buy 1 Get 1) added to cart!`);
+                    navigate('cart');
+                    break;
+                case 'DISCOUNT':
+                    // Add one item with discounted price to cart
+                    addItemsToCart([
+                        { ...targetProduct, quantity: 1, price: targetProduct.price - offer.discountAmount, isFreebie: false }
+                    ]);
+                    showNotification(`${targetProduct.name} added with ₹${offer.discountAmount} discount!`);
+                    navigate('cart');
+                    break;
+                case 'FUTURE_DISCOUNT':
+                    showNotification('This offer grants a future discount. Details are under development.');
+                    break;
+                default:
+                    showNotification('This offer type is not yet fully implemented.');
+                    break;
+            }
+        }
+
+
+        // --- Order History Page ---
+        function renderOrderHistory() {
+            console.log("renderOrderHistory called."); // Log when order history is rendered
+            const appContent = document.getElementById('app-content');
+            appContent.innerHTML = '';
+
+            const orderHistoryContainer = document.createElement('div');
+            orderHistoryContainer.className = 'container mx-auto p-4 font-sans';
+            orderHistoryContainer.innerHTML = `
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Your Order History</h2>
+                <div id="order-list" class="space-y-8">
+                    <!-- Orders will be rendered here -->
+                </div>
+            `;
+            appContent.appendChild(orderHistoryContainer);
+
+            const orderListDiv = document.getElementById('order-list');
+
+            if (isLoadingOrders) {
+                orderListDiv.innerHTML = '<p class="text-center text-gray-600 text-xl">Loading your orders...</p>';
+            } else if (pastOrders.length === 0) {
+                orderListDiv.innerHTML = '<p class="text-center text-gray-600 text-xl">You haven\'t placed any orders yet. Start shopping!</p>';
+            } else {
+                pastOrders.forEach(order => {
+                    const orderDiv = document.createElement('div');
+                    orderDiv.className = 'bg-white rounded-lg shadow-md p-6';
+
+                    const orderDate = order.date && order.date instanceof Timestamp
+                        ? new Date(order.date.seconds * 1000).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+                        : 'Processing Date...';
+
+                    orderDiv.innerHTML = `
+                        <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200">
+                            <div>
+                                <p class="text-lg font-semibold text-gray-800">Order ID: <span class="font-normal text-gray-600">${order.id}</span></p>
+                                <p class="text-sm text-gray-500">Date: ${orderDate}</p>
+                            </div>
+                            <p class="text-xl font-bold text-blue-600">₹${order.total.toFixed(2)}</p>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-3">Items:</h4>
+                        <ul class="space-y-2 mb-4">
+                            ${order.items.map(item => `
+                                <li class="flex justify-between items-center text-gray-700">
+                                    <span>${item.name} x ${item.quantity} ${item.isFreebie ? '(Free)' : ''}</span>
+                                    <span>₹${(item.isFreebie ? 0 : item.price * item.quantity).toFixed(2)}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <button
+                            class="reorder-btn w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+                        >
+                            Re-order This
+                        </button>
+                    `;
+                    orderListDiv.appendChild(orderDiv);
+                    orderDiv.querySelector('.reorder-btn').addEventListener('click', () => handleReorder(order.items));
+                });
+            }
+        }
+
+        // --- My Profile Page ---
+        function renderMyProfilePage() {
+            console.log("renderMyProfilePage called.");
+            const appContent = document.getElementById('app-content');
+            appContent.innerHTML = '';
+
+            const profileContainer = document.createElement('div');
+            profileContainer.className = 'container mx-auto p-4 font-sans max-w-2xl';
+
+            if (!currentUser) {
+                profileContainer.innerHTML = `
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">My Profile</h2>
+                    <p class="text-center text-gray-600 text-xl py-8">Please log in to view your profile.</p>
+                    <div class="flex justify-center mt-6">
+                        <button onclick="openLoginModal()" class="bg-blue-600 text-white py-2 px-5 rounded-md hover:bg-blue-700 transition-colors duration-200">
+                            Log In
+                        </button>
+                    </div>
+                `;
+            } else {
+                profileContainer.innerHTML = `
+                    <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">My Profile</h2>
+
+                    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Personal Information</h3>
+                        <div class="space-y-3 text-lg text-gray-700">
+                            <p><strong>Name:</strong> ${currentUser.displayName || 'Not set'}</p>
+                            <p><strong>Email:</strong> ${currentUser.email || 'Not set'}</p>
+                            <p><strong>User ID:</strong> <span class="break-all text-sm bg-gray-100 px-2 py-1 rounded">${currentUser.uid}</span></p>
+                            ${currentUser.phoneNumber ? `<p><strong>Phone:</strong> ${currentUser.phoneNumber}</p>` : ''}
+                            ${currentUser.photoURL ? `<div class="mt-4"><img src="${currentUser.photoURL}" alt="Profile Picture" class="w-24 h-24 rounded-full object-cover border-2 border-blue-300"></div>` : ''}
+                        </div>
+                        <button onclick="showNotification('Profile editing is under development.')" class="mt-6 bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 transition-colors duration-200 font-semibold">
+                            Edit Profile
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Delivery Addresses</h3>
+                        <p class="text-gray-700 mb-4">Manage your saved delivery locations.</p>
+                        <button onclick="showNotification('Address management is under development.')" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 font-semibold">
+                            Manage Addresses
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Payment Methods</h3>
+                        <p class="text-gray-700 mb-4">Add or update your payment details.</p>
+                        <button onclick="showNotification('Payment method management is under development.')" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 font-semibold">
+                            Manage Payments
+                        </button>
+                    </div>
+                `;
+            }
+            appContent.appendChild(profileContainer);
+        }
+
+        // --- Contact Us Page ---
+        function renderContactUsPage() {
+            console.log("renderContactUsPage called.");
+            const appContent = document.getElementById('app-content');
+            appContent.innerHTML = `
+                <div class="container mx-auto p-4 font-sans text-center">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Contact Me</h2>
+                    <p class="text-lg text-gray-700 mb-8">Hi, I'm <strong class="text-blue-600">SNK</strong>. For more details, follow me on:</p>
+                    <div class="contact-links">
+                        <div class="contact-item">
+                            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" />
+                            <a href="https://www.linkedin.com/in/naveen-kumar-s-18617421a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        </div>
+                        <div class="contact-item">
+                            <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" />
+                            <a href="https://github.com/Naveen-DevOps-IT" target="_blank" rel="noopener noreferrer">GitHub</a>
+                        </div>
+                        <div class="contact-item">
+                            <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" />
+                            <a href="https://www.instagram.com/_naveen4" target="_blank" rel="noopener noreferrer">Instagram</a>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-8">Images from Flaticon.com</p>
+                </div>
+            `;
+        }
+
+        // --- Privacy Policy Page ---
+        function renderPrivacyPolicyPage() {
+            console.log("renderPrivacyPolicyPage called.");
+            const appContent = document.getElementById('app-content');
+            appContent.innerHTML = `
+                <div class="container mx-auto p-4 font-sans privacy-policy">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Privacy Policy for Ulva</h2>
+
+                    <p>Last updated: June 07, 2025</p>
+
+                    <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
+
+                    <p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy.</p>
+
+                    <h3>Interpretation and Definitions</h3>
+                    <h4>Interpretation</h4>
+                    <p>The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
+
+                    <h4>Definitions</h4>
+                    <p>For the purposes of this Privacy Policy:</p>
+                    <ul>
+                        <li><strong>Account</strong> means a unique account created for You to access our Service or parts of our Service.</li>
+                        <li><strong>Affiliate</strong> means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.</li>
+                        <li><strong>Application</strong> means the software program provided by the Company downloaded by You on any electronic device, named Ulva.</li>
+                        <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to Ulva.</li>
+                        <li><strong>Cookies</strong> are small files that are placed on Your computer, mobile device or any other device by a website, containing the details of Your browsing history on that website among its many uses.</li>
+                        <li><strong>Country</strong> refers to: Telangana, India</li>
+                        <li><strong>Device</strong> means any device that can access the Service such as a computer, a cellphone or a digital tablet.</li>
+                        <li><strong>Personal Data</strong> is any information that relates to an identified or identifiable individual.</li>
+                        <li><strong>Service</strong> refers to the Application or the Website or both.</li>
+                        <li><strong>Service Provider</strong> means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.</li>
+                        <li><strong>Usage Data</strong> refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).</li>
+                        <li><strong>Website</strong> refers to Ulva, accessible from [Your Website URL, if applicable].</li>
+                        <li><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</li>
+                    </ul>
+
+                    <h3>Collecting and Using Your Personal Data</h3>
+                    <h4>Types of Data Collected</h4>
+                    <h5>Personal Data</h5>
+                    <p>While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:</p>
+                    <ul>
+                        <li>Email address</li>
+                        <li>First name and last name</li>
+                        <li>Usage Data</li>
+                    </ul>
+
+                    <h5>Usage Data</h5>
+                    <p>Usage Data is collected automatically when using the Service.</p>
+                    <p>Usage Data may include information such as Your Device's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.</p>
+                    <p>When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.</p>
+                    <p>We may also collect information that Your browser sends whenever You visit our Service or when You access the Service by or through a mobile device.</p>
+
+                    <h4>Use of Your Personal Data</h4>
+                    <p>The Company may use Personal Data for the following purposes:</p>
+                    <ul>
+                        <li><strong>To provide and maintain our Service</strong>, including to monitor the usage of our Service.</li>
+                        <li><strong>To manage Your Account:</strong> to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.</li>
+                        <li><strong>For the performance of a contract:</strong> the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service.</li>
+                        <li><strong>To contact You:</strong> To contact You by email or other equivalent forms of electronic communication, such as a mobile application's push notifications regarding updates or informative communications related to the functionalities, products or contracted services, including the security updates, when necessary or reasonable for their implementation.</li>
+                        <li><strong>To provide You</strong> with news, special offers and general information about other goods, services and events which we offer that are similar to those that you have already purchased or enquired about unless You have opted not to receive such information.</li>
+                        <li><strong>To manage Your requests:</strong> To attend and manage Your requests to Us.</li>
+                        <li><strong>For business transfers:</strong> We may use Your information to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets, whether as a going concern or as part of bankruptcy, liquidation, or similar proceeding, in which Personal Data held by Us about our Service users is among the assets transferred.</li>
+                        <li><strong>For other purposes</strong>: We may use Your information for other purposes, suchs as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, services, marketing and your experience.</li>
+                    </ul>
+
+                    <h3>Disclosure of Your Personal Data</h3>
+                    <p>We may share Your personal information in the following situations:</p>
+                    <ul>
+                        <li><strong>With Service Providers:</strong> We may share Your personal information with Service Providers to monitor and analyze the use of our Service, to contact You.</li>
+                        <li><strong>For business transfers:</strong> We may share or transfer Your personal information in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company.</li>
+                        <li><strong>With Affiliates:</strong> We may share Your information with Our affiliates, in which case we will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us.</li>
+                        <li><strong>With business partners:</strong> We may share Your information with Our business partners to offer You certain products, services or promotions.</li>
+                        <li><strong>With other users:</strong> when You share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside.</li>
+                        <li><strong>With Your consent</strong>: We may disclose Your personal information for any other purpose with Your consent.</li>
+                    </ul>
+
+                    <h3>Security of Your Personal Data</h3>
+                    <p>The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security.</p>
+
+                    <h3>Changes to this Privacy Policy</h3>
+                    <p>We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.</p>
+                    <p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
+
+                    <h3>Contact Us</h3>
+                    <p>If you have any questions about this Privacy Policy, You can contact us by visiting the Contact Us page on this application.</p>
+                </div>
+            `;
+        }
+
+
+        // --- Navigation Logic ---
+        let currentPage = 'home';
+        function navigate(page) {
+            console.log(`Navigating to: ${page}`); // Log navigation
+            currentPage = page;
+            renderPage();
+        }
+
+        function renderPage() {
+            console.log(`Rendering page: ${currentPage}`); // Log which page is being rendered
+
+            // First, remove active class from all navigation buttons
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Then, render the specific page content and set the active button
+            switch (currentPage) {
+                case 'home':
+                    renderProductList('all');
+                    document.getElementById('nav-home').classList.add('active');
+                    break;
+                case 'chicken':
+                    renderProductList('chicken');
+                    document.getElementById('nav-chicken').classList.add('active');
+                    break;
+                case 'mutton':
+                    renderProductList('mutton');
+                    document.getElementById('nav-mutton').classList.add('active');
+                    break;
+                case 'eggs':
+                    renderProductList('eggs');
+                    document.getElementById('nav-eggs').classList.add('active');
+                    break;
+                case 'fish':
+                    renderProductList('fish');
+                    document.getElementById('nav-fish').classList.add('active');
+                    break;
+                case 'offers':
+                    renderOffers();
+                    document.getElementById('nav-offers').classList.add('active');
+                    break;
+                case 'orders':
+                    renderOrderHistory();
+                    document.getElementById('nav-orders').classList.add('active');
+                    break;
+                case 'cart':
+                    renderCart();
+                    // Cart doesn't have a direct nav button, so no active class for it
+                    break;
+                case 'best-sellers':
+                    renderBestSellersPage();
+                    // No direct nav button, no active class
+                    break;
+                case 'boneless':
+                    renderBonelessPage();
+                    // No direct nav button, no active class
+                    break;
+                case 'seafood':
+                    renderSeafoodPage();
+                    // No direct nav button, no active class
+                    break;
+                case 'my-profile':
+                    renderMyProfilePage();
+                    // No direct nav button, no active class
+                    break;
+                case 'contact':
+                    renderContactUsPage();
+                    // Contact Us doesn't have a direct nav button in the top bar, so no active class for it
+                    break;
+                case 'privacy':
+                    renderPrivacyPolicyPage();
+                    // Privacy Policy doesn't have a direct nav button in the top bar, so no active class for it
+                    break;
+                default:
+                    renderProductList('all');
+                    document.getElementById('nav-home').classList.add('active');
+            }
+        }
+
+        // --- Cart Logic ---
+        function addItemsToCart(itemsToAdd) {
+            itemsToAdd.forEach(itemToAdd => {
+                const existingItemIndex = cartItems.findIndex((item) => item.id === itemToAdd.id && item.isFreebie === itemToAdd.isFreebie);
+                if (existingItemIndex > -1) {
+                    cartItems[existingItemIndex].quantity += itemToAdd.quantity;
+                } else {
+                    cartItems.push({ ...itemToAdd });
+                }
+            });
+            updateHeader(cartItems.length, currentUser); // Update cart count in header
+            if (currentPage === 'cart') {
+                renderCart(); // Re-render cart if on cart page
+            }
+        }
+
+        function handleAddToCart(product, quantity) {
+            console.log(`Attempting to add to cart: ${quantity} x ${product.name}`); // Log add to cart
+            addItemsToCart([{ ...product, quantity, isFreebie: false }]);
+            showNotification(`${quantity} x ${product.name} added to cart!`);
+        }
+
+        function handleUpdateQuantity(id, newQuantity) {
+            // Find the index of the item, ensuring we don't accidentally update a freebie if the product ID matches
+            const itemIndex = cartItems.findIndex(item => item.id === id && !item.isFreebie);
+            if (itemIndex > -1) {
+                cartItems[itemIndex].quantity = Math.max(1, newQuantity);
+                if (currentPage === 'cart') {
+                    renderCart(); // Re-render cart to show updated quantities
+                }
+            } else {
+                console.warn(`Attempted to update quantity for item ${id} not found or is a freebie.`);
+            }
+        }
+
+
+        function handleRemoveItem(id) {
+            // For simplicity, if a BOGO pair exists, remove both. Otherwise, just the one.
+            const initialLength = cartItems.length;
+            cartItems = cartItems.filter(item => item.id !== id);
+            if (cartItems.length < initialLength) {
+                 showNotification('Item removed from cart!');
+            } else {
+                 showNotification('Could not find item to remove.');
+            }
+
+            updateHeader(cartItems.length, currentUser); // Update cart count in header
+            if (currentPage === 'cart') {
+                renderCart(); // Re-render cart after removal
+            }
+        }
+
+        async function handleCheckout() {
+            if (cartItems.length === 0) {
+                showNotification('Your cart is empty. Nothing to checkout!');
+                return;
+            }
+            if (!currentUser || !currentUser.uid) {
+                showNotification('Please log in to place an order.');
+                openLoginModal();
+                return;
+            }
+
+            setCheckoutLoading(true);
+            console.log("Attempting checkout for user:", currentUser.uid, "with cart:", JSON.stringify(cartItems)); // Added log, stringify for full cart content
+
+            try {
+                // Calculate total, only summing prices for non-freebie items
+                const orderTotal = cartItems.reduce((sum, item) => sum + (item.isFreebie ? 0 : item.price * item.quantity), 0);
+                console.log("Calculated order total:", orderTotal); // Added log
+
+                const orderRef = await addDoc(collection(db, `artifacts/${appId}/public/data/orders`), {
+                    userId: currentUser.uid,
+                    items: cartItems, // Firestore can store arrays of objects like this
+                    total: orderTotal,
+                    date: serverTimestamp(),
+                });
+                console.log("Order successfully placed with ID:", orderRef.id); // Added log on success
+
+                cartItems = []; // Clear cart after successful order
+                showNotification('Order placed successfully! Thank you for shopping with Ulva.');
+                updateHeader(0, currentUser); // Update header cart count
+                navigate('orders'); // Redirect to orders page
+            } catch (error) {
+                console.error("Error placing order:", error); // Existing detailed log
+                // More informative notification for checkout failure
+                showNotification(`Failed to place order. Error: ${error.message}. Please check Firebase Firestore rules.`);
+            } finally {
+                setCheckoutLoading(false);
+                console.log("Checkout process finished (loading state reset)."); // Added final log
+            }
+        }
+
+        function handleReorder(items) {
+            // Filter out any freebie items from the original order when reordering,
+            // as offers might be dynamic or one-time. User will re-apply offers if needed.
+            const itemsToReadd = items.filter(item => !item.isFreebie).map(item => ({...item, isFreebie: false}));
+            addItemsToCart(itemsToReadd);
+            showNotification('Items from past order added to cart!');
+            navigate('cart');
+        }
+
+        // --- Authentication Modals Logic ---
+        function openLoginModal() {
+            const modal = document.getElementById('login-modal');
+            modal.classList.add('open');
+            modal.style.display = 'flex'; // Ensure direct display property is set when opening
+            document.getElementById('login-error').classList.add('hidden'); // Clear error
+            document.getElementById('login-email').value = ''; // Clear fields
+            document.getElementById('login-password').value = '';
+            setAuthLoading(false); // Reset loading state when opening
+            console.log("Login modal opened.");
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('login-modal');
+            modal.classList.remove('open');
+            modal.style.display = 'none'; // Ensure direct display property is set when closing
+            document.getElementById('login-error').classList.add('hidden'); // Clear error
+            setAuthLoading(false); // Reset loading state when closing
+            console.log("Login modal closed.");
+        }
+
+        function openSignupModal() {
+            const modal = document.getElementById('signup-modal');
+            modal.classList.add('open');
+            modal.style.display = 'flex'; // Ensure direct display property is set when opening
+            document.getElementById('signup-error').classList.add('hidden'); // Clear error
+            document.getElementById('signup-name').value = ''; // Clear fields
+            document.getElementById('signup-email').value = '';
+            document.getElementById('signup-password').value = '';
+            setAuthLoading(false); // Reset loading state when opening
+            console.log("Signup modal opened.");
+        }
+
+        function closeSignupModal() {
+            const modal = document.getElementById('signup-modal');
+            modal.classList.remove('open');
+            modal.style.display = 'none'; // Ensure direct display property is set when closing
+            document.getElementById('signup-error').classList.add('hidden'); // Clear error
+            setAuthLoading(false); // Reset loading state when closing
+            console.log("Signup modal closed.");
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorDisplay = document.getElementById('login-error');
+            errorDisplay.classList.add('hidden');
+            setAuthLoading(true);
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                closeLoginModal();
+                showNotification('Logged in successfully!');
+                navigate('home');
+            } catch (err) {
+                console.error("Login error:", err);
+                let errorMessage = "An unknown error occurred. Please try again.";
+                switch (err.code) {
+                    case 'auth/invalid-credential':
+                    case 'auth/wrong-password':
+                    case 'auth/user-not-found':
+                        errorMessage = "Invalid email or password. Please check your credentials.";
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = "Please enter a valid email address.";
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = "Too many failed login attempts. Please try again later or reset your password.";
+                        break;
+                    default:
+                        errorMessage = `Login failed: ${err.message}`;
+                        break;
+                }
+                errorDisplay.textContent = errorMessage;
+                errorDisplay.classList.remove('hidden');
+            } finally {
+                setAuthLoading(false);
+            }
+        }
+
+        async function handleSignup(e) {
+            e.preventDefault();
+            const displayName = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const errorDisplay = document.getElementById('signup-error');
+            errorDisplay.classList.add('hidden');
+            setAuthLoading(true);
+
+            // Client-side password validation
+            let passwordErrors = [];
+            if (password.length < 8) {
+                passwordErrors.push("Password must be at least 8 characters long.");
+            }
+            if (!/[A-Z]/.test(password)) {
+                passwordErrors.push("Password must contain at least one uppercase letter.");
+            }
+            if (!/[a-z]/.test(password)) {
+                passwordErrors.push("Password must contain at least one lowercase letter.");
+            }
+            if (!/[0-9]/.test(password)) {
+                passwordErrors.push("Password must contain at least one number.");
+            }
+            if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(password)) {
+                passwordErrors.push("Password must contain at least one special character.");
+            }
+
+            if (passwordErrors.length > 0) {
+                errorDisplay.innerHTML = `<ul class="list-disc list-inside text-left mx-auto max-w-xs">${passwordErrors.map(err => `<li>${err}</li>`).join('')}</ul>`;
+                errorDisplay.classList.remove('hidden');
+                setAuthLoading(false);
+                return; // Stop signup process if validation fails
+            }
+
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(userCredential.user, { displayName: displayName });
+                closeSignupModal();
+                showNotification('Account created successfully! You are now logged in.');
+                navigate('home');
+            } catch (err) {
+                console.error("Signup error:", err);
+                let errorMessage = "An unknown error occurred during signup. Please try again.";
+                switch (err.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = "This email is already in use. Please try logging in or use a different email.";
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = "Please enter a valid email address.";
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = "Password is too weak. Please use a stronger password with a mix of characters.";
+                        break;
+                    default:
+                        errorMessage = `Signup failed: ${err.message}`;
+                        break;
+                }
+                errorDisplay.textContent = errorMessage;
+                errorDisplay.classList.remove('hidden');
+            } finally {
+                setAuthLoading(false);
+            }
+        }
+
+        async function handleGoogleAuth(isSignup = false) {
+            const errorDisplay = isSignup ? document.getElementById('signup-error') : document.getElementById('login-error');
+            errorDisplay.classList.add('hidden');
+            setAuthLoading(true);
+
+            try {
+                const provider = new GoogleAuthProvider();
+                await signInWithPopup(auth, provider);
+                if (isSignup) closeSignupModal();
+                else closeLoginModal();
+                showNotification('Authenticated successfully with Google!');
+                navigate('home');
+            } catch (err) {
+                console.error("Google Auth error:", err);
+                let errorMessage = "Failed to authenticate with Google. Please try again.";
+                switch (err.code) {
+                    case 'auth/popup-closed-by-user':
+                        errorMessage = "Google sign-in popup was closed.";
+                        break;
+                    case 'auth/cancelled-popup-request':
+                        errorMessage = "Another Google sign-in attempt was already in progress.";
+                        break;
+                    case 'auth/unauthorized-domain':
+                        errorMessage = "Google sign-in failed: Unauthorized domain. Please add this domain to your Firebase Authorized Domains in Firebase Console (Authentication -> Settings -> Authorized domains).";
+                        break;
+                    default:
+                        errorMessage = `Google sign-in failed: ${err.message}`;
+                        break;
+                }
+                errorDisplay.textContent = errorMessage;
+                errorDisplay.classList.remove('hidden');
+            } finally {
+                setAuthLoading(false);
+            }
+        }
+
+        async function handleLogout() {
+            try {
+                await signOut(auth);
+                showNotification('Logged out successfully!');
+                navigate('home');
+            } catch (error) {
+                console.error("Logout failed:", error);
+                showNotification(`Logout failed: ${error.message}`);
+            }
+        }
+
+        // --- Firebase Auth State Listener & Order Fetching ---
+        function setupFirebaseListeners() {
+            // Auth State Listener
+            onAuthStateChanged(auth, async (user) => {
+                console.log("Auth state changed. Current user:", user); // Log user state
+                if (user) {
+                    currentUser = user;
+                    isAuthReady = true;
+                    updateHeader(cartItems.length, currentUser);
+                    // Fetch orders for the logged-in user
+                    fetchOrders();
+                } else {
+                    currentUser = null;
+                    isAuthReady = true;
+                    updateHeader(cartItems.length, null);
+                    pastOrders = []; // Clear past orders if no user is logged in
+                    if (currentPage === 'orders') { // Re-render orders if on that page
+                        renderOrderHistory();
+                    }
+                    // If no user, avoid attempting anonymous sign-in if the error indicates it's restricted
+                    // This specifically addresses the auth/admin-restricted-operation error for anonymous.
+                    // If this error occurs, it means anonymous auth is not enabled in Firebase project.
+                    if (!sessionStorage.getItem('anonymousSignInAttempted')) { // Check if attempt already made
+                        try {
+                            await signInAnonymously(auth);
+                            sessionStorage.setItem('anonymousSignInAttempted', 'true'); // Mark attempt
+                            console.log("Anonymous sign-in attempted.");
+                        } catch (error) {
+                            if (error.code === 'auth/admin-restricted-operation') {
+                                console.warn("Anonymous sign-in is restricted by Firebase project settings. Please enable it in Firebase Console if you want anonymous users.");
+                                showNotification("Anonymous sign-in failed: Restricted by Firebase project settings. Enable it for full functionality.");
+                                // Do not set 'anonymousSignInAttempted' if it's restricted, so user can try again if enabled later
+                            } else {
+                                console.error("Anonymous sign-in error:", error);
+                                showNotification(`Anonymous sign-in failed: ${error.message}`);
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Initial custom token sign-in attempt
+            async function initialAuth() {
+                try {
+                    // Check if __initial_auth_token is provided by the Canvas environment
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                        console.log("Signed in with custom token.");
+                    } else {
+                        // If no custom token, try anonymous sign-in if not already attempted
+                        if (!sessionStorage.getItem('anonymousSignInAttempted')) {
+                            await signInAnonymously(auth);
+                            sessionStorage.setItem('anonymousSignInAttempted', 'true');
+                            console.log("Anonymous sign-in on initial load.");
+                        } else {
+                            console.log("Anonymous sign-in already attempted, skipping initial auth.");
+                        }
+                    }
+                } catch (error) {
+                    if (error.code === 'auth/admin-restricted-operation') {
+                        console.warn("Anonymous sign-in is restricted by Firebase project settings. Please enable it in Firebase Console if you want anonymous users.");
+                        showNotification("Anonymous sign-in failed: Restricted by Firebase project settings. Enable it for full functionality.");
+                        // Do not set 'anonymousSignInAttempted' if it's restricted, so user can try again if enabled later
+                    } else {
+                        console.error("Firebase initial authentication error:", error);
+                        showNotification(`Initial auth failed: ${error.message}`);
+                    }
+                }
+            }
+            initialAuth();
+        }
+
+        function fetchOrders() {
+            if (!isAuthReady || !currentUser) {
+                pastOrders = [];
+                if (currentPage === 'orders') renderOrderHistory(); // Clear and re-render if user logs out
+                return;
+            }
+
+            isLoadingOrders = true;
+            if (currentPage === 'orders') renderOrderHistory(); // Show loading state
+
+            const ordersCollectionRef = collection(db, `artifacts/${appId}/public/data/orders`);
+            const q = query(ordersCollectionRef, where("userId", "==", currentUser.uid));
+
+            onSnapshot(q, (snapshot) => {
+                const ordersData = [];
+                snapshot.forEach((doc) => {
+                    ordersData.push({ id: doc.id, ...doc.data() });
+                });
+                ordersData.sort((a, b) => (b.date?.seconds || 0) - (a.date?.seconds || 0));
+                pastOrders = ordersData;
+                isLoadingOrders = false;
+                if (currentPage === 'orders') {
+                    renderOrderHistory(); // Re-render to show updated orders
+                }
+            }, (error) => {
+                console.error("Error fetching orders:", error);
+                showNotification("Failed to load past orders.");
+                isLoadingOrders = false;
+                if (currentPage === 'orders') {
+                    renderOrderHistory(); // Re-render to show error/empty state
+                }
+            });
+        }
+
+
+        // --- Event Listeners Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOMContentLoaded event fired."); // Log start of DOMContentLoaded
+
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // Explicitly ensure modals are hidden from the start
+            document.getElementById('login-modal').style.display = 'none';
+            document.getElementById('signup-modal').style.display = 'none';
+            document.getElementById('login-modal').classList.remove('open');
+            document.getElementById('signup-modal').classList.remove('open');
+            document.getElementById('login-error').classList.add('hidden');
+            document.getElementById('signup-error').classList.add('hidden');
+            setAuthLoading(false); // Ensure auth buttons are not stuck in loading state
+
+            // Navigation buttons
+            document.getElementById('nav-home').addEventListener('click', () => navigate('home'));
+            document.getElementById('nav-chicken').addEventListener('click', () => navigate('chicken'));
+            document.getElementById('nav-mutton').addEventListener('click', () => navigate('mutton'));
+            document.getElementById('nav-eggs').addEventListener('click', () => navigate('eggs'));
+            document.getElementById('nav-fish').addEventListener('click', () => navigate('fish'));
+            document.getElementById('nav-offers').addEventListener('click', () => navigate('offers'));
+            document.getElementById('nav-orders').addEventListener('click', () => navigate('orders'));
+            // New: Contact Us button in footer
+            document.getElementById('footer-contact-us').addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default anchor behavior
+                navigate('contact');
+            });
+            // New: Privacy Policy button in footer
+            document.getElementById('footer-privacy-policy').addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default anchor behavior
+                navigate('privacy');
+            });
+
+
+            // Modal event listeners
+            document.getElementById('login-cancel-btn').addEventListener('click', closeLoginModal);
+            document.getElementById('signup-cancel-btn').addEventListener('click', closeSignupModal);
+            document.getElementById('switch-to-signup-from-login').addEventListener('click', () => {
+                closeLoginModal();
+                openSignupModal();
+            });
+            document.getElementById('switch-to-login-from-signup').addEventListener('click', () => {
+                closeSignupModal();
+                openLoginModal();
+            });
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            document.getElementById('signup-form').addEventListener('submit', handleSignup);
+            document.getElementById('google-login-btn').addEventListener('click', () => handleGoogleAuth(false));
+            document.getElementById('google-signup-btn').addEventListener('click', () => handleGoogleAuth(true));
+
+            // Add search input event listener
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.trim();
+                if (searchTerm) {
+                    renderSearchResults(searchTerm);
+                } else {
+                    renderProductList('all'); // Show all products if search box is empty
+                }
+            });
+            searchInput.addEventListener('focus', () => {
+                 // No notification on focus for now, as it's functional
+            });
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    const searchTerm = e.target.value.trim();
+                    if (searchTerm) {
+                        renderSearchResults(searchTerm);
+                    } else {
+                        renderProductList('all');
+                    }
+                }
+            });
+
+
+            // Start initial rendering and services
+            setupFirebaseListeners();
+            startOfferCarousel();
+            renderPage(); // Render the initial home page
+            updateHeader(cartItems.length, currentUser); // Initial header update
+            console.log("Initial setup complete."); // Log end of DOMContentLoaded
+        });
+
+    </script>
+</body>
+</html>
